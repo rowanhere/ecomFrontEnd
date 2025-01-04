@@ -1,0 +1,52 @@
+
+.one-edge-shadow {
+    box-shadow: 0 3px 10px rgba(249, 245, 245, 0.25);
+  
+  }
+.marker
+{
+    position: absolute;
+    height: 2px;
+    width: 0;
+    background-color: orange;
+    top: 0;
+    border-radius: 5px;
+    transition: all 0.5s ease-in-out;
+}
+.alert::before{
+  content: "";
+  position: absolute;
+  background-color: red;
+  top: 15%;
+  right: 20%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulse {
+  50% {
+      opacity: .3;
+  }
+}
+
+.productScroll::-webkit-scrollbar{
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.productScroll {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+
+.textTruncate::before{
+  content: " ...";
+  margin-left: 0.2px;
+  background: white;
+  color: rgb(156 163 175 /1)
+}
+ .commentDiv > textarea:valid ~ label {
+  @apply top-[-40%] right-[50%] translate-x-1/2
+}
