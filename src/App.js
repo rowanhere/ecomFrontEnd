@@ -16,6 +16,7 @@ import Login from "./components/Profile/Login";
 import ProfileMain from "./components/Profile/ProfileMain";
 import { ToastContainer } from "react-toastify";
 import ForgotPassword from "./components/Profile/ForgotPassword";
+import WishListMain from "./components/WishList/WishListMain";
 export const TriggerCart = createContext(null);
 
 function Layout({ alert }) {
@@ -56,6 +57,7 @@ function App() {
         { path: "/", element: <HomeMain /> },
         { path: "/search", element: <SearchMain /> },
         { path: "/products/:id", element: <ProductMain /> },
+        { path: "/wishlist", element: <WishListMain /> },
         {
           path: "/profile",
           element: <ProfileMain />,
