@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 const ImageSlider = ({images}) => {
   
@@ -13,14 +13,17 @@ const ImageSlider = ({images}) => {
       const imageBound = image.getBoundingClientRect();
       const imageCenter = imageBound.left + imageBound.width / 2;
       if (imageCenter <= carousel_Center_X) {
-        //   console.log("Currently on image no ", index);
-        const getSlideTracker = imageTrackRef.current[index];
+          // console.log("Currently on image no ", index);
+        const getSlideTracker = imageTrackRef.current[index];        
         markerRef.current.style.left = getSlideTracker.offsetLeft + "px";
-        markerRef.current.style.width = getSlideTracker.offsetWidth + "px";
       }
     });
   };
-  
+  useEffect(()=>{
+ 
+    const firstImage = imageTrackRef.current[0]
+    markerRef.current.style.left = firstImage.offsetLeft + "px"  
+  },[])
   return (
     <>
       <div
@@ -41,10 +44,7 @@ const ImageSlider = ({images}) => {
       </div>
       <div className="flex relative justify-center gap-2 mt-4">
         {/* marker for slider track */}
-        <div
-          ref={markerRef}
-          className="absolute left-[111px] transition-all ease-linear bg-orange-400 w-[40px]  h-1 rounded-lg"
-        ></div>
+       
         {Array(images.length)
           .fill("")
           .map((_, index) => (
@@ -55,6 +55,10 @@ const ImageSlider = ({images}) => {
               className="bg-gray-500 w-10 h-1 rounded-lg"
             ></div>
           ))}
+           <div
+          ref={markerRef}
+          className={`absolute transition-all ease-linear bg-orange-400 w-[40px]  h-1 rounded-lg`}
+        ></div>
       </div>
     </>
   );

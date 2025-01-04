@@ -1,24 +1,22 @@
 import React from "react";
 import { BsBagPlus } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
-// import { ImSpinner10 } from "react-icons/im";
 import { Link } from "react-router-dom";
-import { useAddToCart } from "./addToCart";
 
-const Products = ({ item }) => {
-    const AddToCart = useAddToCart();
+export const WishListProduct = ({ item }) => {
+  console.log(item);
+
   return (
     <Link
       to={`/products/${item.id}`}
-      preventScrollReset={false} 
+      preventScrollReset={false}
       className="h-[300px] relative overflow-hidden border-b shadow-md  bg-gray-100 rounded-xl  rounded-br-[40px]"
-
     >
-      <div className="flex justify-center ">
+      <div className="flex justify-center  overflow-hidden">
         <img
           src={item.thumbnail}
           alt={item.title}
-          className="min-h-[100%] min-w-[100%] object-contain mix-blend-multiply aspect-square"
+          className="min-h-[100%] min-w-[100%] object-cover mix-blend-multiply aspect-square"
         />
       </div>
       <div className="bg-white relative -top-3  h-full rounded-t-[20px] p-4">
@@ -36,17 +34,12 @@ const Products = ({ item }) => {
             </div>
             <div className="mt-1 text-red-500">${item.price}</div>
           </div>
-          <button className="outline-none bg-orange-500 text-white p-[0.45rem]  rounded-[0.55rem] rounded-br-[1.6rem]" onClick={(e)=> {
-            e.preventDefault()
-            AddToCart(item.id)
-          }} >
-          <BsBagPlus size={30} className="p-[0.2rem]"/>
-          {/* <ImSpinner10 size={30} className="p-[0.2rem] animate-spin" /> */}
+          <button className="outline-none bg-orange-500 text-white p-[0.45rem]  rounded-[0.55rem] rounded-br-[1.6rem]">
+            <BsBagPlus size={30} className="p-[0.2rem]" />
+            {/* <ImSpinner10 size={30} className="p-[0.2rem] animate-spin" /> */}
           </button>
         </div>
       </div>
     </Link>
   );
 };
-
-export default Products;
