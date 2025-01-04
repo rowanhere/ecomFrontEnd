@@ -2,7 +2,6 @@ import React from 'react'
 
 const ProdcutPrice = ({isDiscounted,price}) => {
   const discountedAmt = price - (price * 6/100)
-  console.log(discountedAmt);
   
   return (
     <div className="mt-2 flex gap-2 items-start">

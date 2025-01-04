@@ -4,12 +4,23 @@ import ProdcutDes from "./ProdcutDes";
 import ProdcutPrice from "./ProdcutPrice";
 import ProductTypes from "./ProductTypes";
 import ProductReviews from "./ProductReviews";
+import axios from "axios";
+import toastifyAlert from "../helpers/toastifyAlert";
 const ProductTitle = ({ title, liked, addToWishlist }) => {
-  const [titleCollapse,setTitleCollapse] = useState(true)
+  const [titleCollapse, setTitleCollapse] = useState(true);
   return (
     <div className="flex justify-between items-center">
       <div className=" text-[1rem] flex items-center gap-1 ">
-        <h3 onClick={()=> setTitleCollapse(e=> !e)}  className={titleCollapse ?"w-[25ch] overflow-hidden text-nowrap overflow-ellipsis":" text-left w-[25ch]"}>{title}</h3>
+        <h3
+          onClick={() => setTitleCollapse((e) => !e)}
+          className={
+            titleCollapse
+              ? "w-[25ch] overflow-hidden text-nowrap overflow-ellipsis"
+              : " text-left w-[25ch]"
+          }
+        >
+          {title}
+        </h3>
         <div className="flex items-center gap-1 bg-orange-400 rounded-xl w-[fit-content] px-2 text-white">
           <span>3.6</span>
           <FaStar className="text-white" size={17} />
@@ -27,46 +38,58 @@ const ProductTitle = ({ title, liked, addToWishlist }) => {
     </div>
   );
 };
-const ProductInfo = ({info}) => {
-  const [liked, setIsLiked] = useState(false);
-  console.log(info.discount.isActive);
-  
+const ProductInfo = ({ info }) => {
+  const [liked, setIsLiked] = useState(info.liked);
+
   const isDiscounted = info.discount;
-  const addToWishlist = () => {
-    setIsLiked((prev) => !prev);
+  const addToWishlist = async () => {
+    try {
+      const url = process.env.REACT_APP_API_URL + "user/wishlist";
+      const getAuthorizationToken = localStorage.getItem("userId");
+      if (!getAuthorizationToken) throw new Error("Please login in!");
+      const data = {
+        ProductId: info._id,
+      };
+      const addToLiked = await axios.post(url,data, {
+        headers: {
+          Authorization: `Bearer ${getAuthorizationToken}`,
+        },
+      });
+      toastifyAlert("success",addToLiked.data)      
+      setIsLiked((prev) => !prev);
+    } catch (err) {
+      console.log(err);
+      toastifyAlert("error",err.message)      
+    }
   };
   const title = info.title;
-  const price = info.price
-  const des = info.description
-  const ChooseTypes = info.type
+  const price = info.price;
+  const des = info.description;
+  const ChooseTypes = info.type;
   return (
     <div className="my-4 font-poppins font-semibold mb-[5rem]">
       <ProductTitle liked={liked} addToWishlist={addToWishlist} title={title} />
       <ProdcutPrice isDiscounted={isDiscounted} price={price} />
-      <ProdcutDes des={des}/>
-     {ChooseTypes &&  <div className="mt-2">
-        <h3 className="text-[1rem]">Type</h3>
-        <div className="grid grid-cols-2 gap-5">
-         
-         { 
-          Object.keys(ChooseTypes).map(e=>{
-            return (
-              <ProductTypes
-              key={e}
-              typeTitle={e}
-              typeChilds={
-                ChooseTypes[e].map(e=>{
-                  return {name:e}
-                })
-              }
-            />
-            )
-          })
-         }
-          
+      <ProdcutDes des={des} />
+      {ChooseTypes && (
+        <div className="mt-2">
+          <h3 className="text-[1rem]">Type</h3>
+          <div className="grid grid-cols-2 gap-5">
+            {Object.keys(ChooseTypes).map((e) => {
+              return (
+                <ProductTypes
+                  key={e}
+                  typeTitle={e}
+                  typeChilds={ChooseTypes[e].map((e) => {
+                    return { name: e };
+                  })}
+                />
+              );
+            })}
+          </div>
         </div>
-      </div>}
-      
+      )}
+
       <ProductReviews />
     </div>
   );
