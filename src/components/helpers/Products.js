@@ -3,10 +3,8 @@ import { BsBagPlus } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 // import { ImSpinner10 } from "react-icons/im";
 import { Link } from "react-router-dom";
-import { useAddToCart } from "./addToCart";
 
 const Products = ({ item }) => {
-    const AddToCart = useAddToCart();
   return (
     <Link
       to={`/products/${item.id}`}
@@ -38,7 +36,6 @@ const Products = ({ item }) => {
           </div>
           <button className="outline-none bg-orange-500 text-white p-[0.45rem]  rounded-[0.55rem] rounded-br-[1.6rem]" onClick={(e)=> {
             e.preventDefault()
-            AddToCart(item.id)
           }} >
           <BsBagPlus size={30} className="p-[0.2rem]"/>
           {/* <ImSpinner10 size={30} className="p-[0.2rem] animate-spin" /> */}

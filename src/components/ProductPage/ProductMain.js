@@ -4,6 +4,7 @@ import ProductInfo from "./ProductInfo";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import toastifyAlert from "../helpers/toastifyAlert";
+import ProductMenu from "./ProductMenu";
 
 const ProductMain = () => {
   const { id } = useParams();
@@ -29,15 +30,15 @@ const ProductMain = () => {
             getProductDetail.data.liked = getLiked.data;
           }
         } catch (err) {
-          const errMessage = err.response.data
-          toastifyAlert("error",errMessage)
+          const errMessage = err.response.data;
+          toastifyAlert("error", errMessage);
         }
         setProductInfo(getProductDetail.data);
         console.log(getProductDetail.data);
       } catch (err) {
         console.log(err);
-        toastifyAlert("error","Some error occured")
-        }
+        toastifyAlert("error", "Some error occured");
+      }
     };
     fetchProductInfo();
   }, [id]);
