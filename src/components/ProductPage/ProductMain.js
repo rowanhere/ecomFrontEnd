@@ -4,7 +4,7 @@ import ProductInfo from "./ProductInfo";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import toastifyAlert from "../helpers/toastifyAlert";
-import ProductMenu from "./ProductMenu";
+// import ProductMenu from "./ProductMenu";
 
 const ProductMain = () => {
   const { id } = useParams();

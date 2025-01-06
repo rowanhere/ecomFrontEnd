@@ -1,11 +1,11 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import DefaultMenu from "./helpers/DefaultMenu";
-import ProductMenu from "./ProductPage/ProductMenu";
 import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import { IoIosPaper } from "react-icons/io";
 import { RiHome7Fill } from "react-icons/ri";
+import ProductMenu from "./ProductPage/ProductMenu";
 const MenuBar = () => {
   const location = useLocation();
 const path = location.pathname;
@@ -37,10 +37,11 @@ const isHome = path.startsWith("/products/")
     ];
   return (
     <footer className={`${isHome || "grid grid-cols-4 gap-5"}  justify-items-center items-center p-3  one-edge-shadow  border-t-[0.3px] border-gray-200 bg-white fixed bottom-0 left-0 right-0`}>
-      { isHome ? (
-        <ProductMenu />
-      ) : (
+      { !isHome ?  (
         <DefaultMenu path={path} menus={menus}/>
+      ):(
+        <ProductMenu />
+
       )}
     </footer>
   );

@@ -4,7 +4,6 @@ import { FiShoppingBag } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 import toastifyAlert from "../helpers/toastifyAlert";
 import { CgSpinner } from "react-icons/cg";
-import { UseAddToCart } from "../helpers/AddToCart";
 
 export const ProductMenuButton = ({ children, className, type, onClick }) => (
   <button
@@ -16,8 +15,7 @@ export const ProductMenuButton = ({ children, className, type, onClick }) => (
 );
 
 const ProductMenu = () => {
-     
-      const cartCheck =  UseAddToCart()
+
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const addProductToCart = async () => {
@@ -42,7 +40,6 @@ const ProductMenu = () => {
       );
       console.log(sendAddCart.data);
       toastifyAlert("success", "Product added to cart");
-      cartCheck()
     } catch (err) {
       console.log(err);
       toastifyAlert("error", "Internal server error");

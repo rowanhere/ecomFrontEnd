@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext } from "react";
 import MenuBar from "./components/MenuBar";
 import HomeMain from "./components/HomePage/HomeMain";
 import NavBar from "./components/NavBar";
@@ -17,15 +17,13 @@ import ProfileMain from "./components/Profile/ProfileMain";
 import { ToastContainer } from "react-toastify";
 import ForgotPassword from "./components/Profile/ForgotPassword";
 import WishListMain from "./components/WishList/WishListMain";
+import CartComponents from "./components/helpers/CartComponents";
 export const TriggerCart = createContext(null);
 
-function Layout({ alert }) {
+function Layout() {
   return (
     <>
-      <NavBar
-        notificationAlert={alert.notificationAlert}
-        cartAlert={alert.cartAlert}
-      />
+      <NavBar />
       <Outlet />
       <MenuBar />
       <ScrollRestoration
@@ -38,21 +36,11 @@ function Layout({ alert }) {
   );
 }
 function App() {
-  const [alert, setAlert] = useState({
-    notificationAlert: false,
-    cartAlert: false,
-  });
-  const checkCart = () => {
-    setAlert((prev) => ({
-      notificationAlert: !prev.notificationAlert,
-      cartAlert: !prev.cartAlert,
-    }));
-  };
   const router = createBrowserRouter([
     {
       path: "/",
       errorElement: <ErrorBoundary />,
-      element: <Layout alert={alert} />, // Layout wraps around child routes
+      element: <Layout />, // Layout wraps around child routes
       children: [
         { path: "/", element: <HomeMain /> },
         { path: "/search", element: <SearchMain /> },
@@ -70,13 +58,17 @@ function App() {
         },
       ],
     },
+    {
+      path: "/cart",
+      element: <CartComponents />,
+    },
   ]);
 
   return (
-    <TriggerCart.Provider value={checkCart}>
+    <>
       <RouterProvider router={router} />
       <ToastContainer />
-    </TriggerCart.Provider>
+    </>
   );
 }
 

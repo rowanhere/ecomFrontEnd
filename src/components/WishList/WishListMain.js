@@ -19,7 +19,7 @@ const WishListMain = () => {
         setWishList(getWishList.data);
       } catch (err) {
         console.log(err);
-        toastifyAlert("error", "Some error occurred");
+        toastifyAlert("error", err.response.data);
       }
     };
     getMyWishList();
