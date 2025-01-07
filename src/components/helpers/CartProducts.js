@@ -1,11 +1,11 @@
-import React, {  useState } from "react";
+import React, { useRef, useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { useSwipeable } from "react-swipeable";
 const CartProducts = () => {
   const [ItemCount, setItemCount] = useState(1);
-  const [movedLeft, setIsMovedleft] = useState(false);
-
+  const swipe = useRef(null);
+  const swipeEndTrack = useRef(0);
   const config = {
     delta: 10, // min distance(px) before a swipe starts. *See Notes*
     preventScrollOnSwipe: false, // prevents scroll during swipe (*See Details*)
@@ -15,27 +15,50 @@ const CartProducts = () => {
     swipeDuration: Infinity, // allowable duration of a swipe (ms). *See Notes*
     touchEventOptions: { passive: true }, // options for touch listeners (*See Details*)
   };
-  const handleMoveLeft = () => {
-    setIsMovedleft(true)
+  const handleSwap = (e) => {
+    const swipeDiv = swipe.current;
+    const swipePx = e.deltaX;
+    swipeEndTrack.current = e.deltaX;
+    if (e.dir === "Right") {
+      swipeDiv.style.transform = `translateX(0px)`;
+      return;
+    }
+
+    if (swipePx < 0 && swipePx > -200)
+      swipeDiv.style.transform = `translateX(${swipePx + "px"})`;
   };
-  const handleMoveRight = () => {
-    setIsMovedleft(false)
+  const handleEnd = () => {
+    if (!swipeEndTrack.current) {
+      swipe.current.style.transform = `translateX(0px)`;
+      return;
+    }
+    if (swipeEndTrack.current <= -70 && swipeEndTrack.current) {
+      swipeEndTrack.current = null;
+      swipe.current.style.transform = `translateX(-70px)`;
+    }
   };
   const handlers = useSwipeable({
-    onSwipedLeft: handleMoveLeft,
-    onSwipedRight: handleMoveRight,
+    onSwiping: handleSwap,
+    onTouchEndOrOnMouseUp: handleEnd,
     ...config,
   });
   return (
     <div className="relative" {...handlers}>
       <div className="absolute flex p-4 -z-[1] bg-red-500 bg-opacity-40 inset-0 rounded-xl">
-        <button className="ml-auto text-red-600">
+        <button
+          className="ml-auto  text-red-600"
+          onClick={(e) => {
+            console.log("Hello");
+          }}
+        >
           <RiDeleteBinFill size={25} />
         </button>
       </div>
-      <div className={`flex transition-transform ${movedLeft?"-translate-x-[70px]":"translate-x-0"}  gap-2 bg-white border  shadow-lg p-2 rounded-xl`}>
+      <div
+        ref={swipe}
+        className={`flex transition-transform duration-500 ease-out gap-2 bg-white border  shadow-lg p-2 rounded-xl`}
+      >
         {/* image  */}
-
         <div className="h-[80px] rounded-xl overflow-hidden aspect-square">
           <img
             className="max-w-full object-center max-h-full object-cover"
