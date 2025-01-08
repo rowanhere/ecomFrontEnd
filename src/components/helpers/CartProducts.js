@@ -1,13 +1,14 @@
 import React, { useRef, useState } from "react";
-import { FaMinus, FaPlus } from "react-icons/fa";
+import { FaHeart, FaMinus, FaPlus } from "react-icons/fa";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { useSwipeable } from "react-swipeable";
 const CartProducts = () => {
   const [ItemCount, setItemCount] = useState(1);
   const swipe = useRef(null);
-  const swipeEndTrack = useRef(0);
+  const swipeEndTrack = useRef(null);
+  const [side, setSide] = useState(null);
   const config = {
-    delta: 10, // min distance(px) before a swipe starts. *See Notes*
+    delta: 69, // min distance(px) before a swipe starts. *See Notes*
     preventScrollOnSwipe: false, // prevents scroll during swipe (*See Details*)
     trackTouch: true, // track touch input
     trackMouse: false, // track mouse input
@@ -18,22 +19,33 @@ const CartProducts = () => {
   const handleSwap = (e) => {
     const swipeDiv = swipe.current;
     const swipePx = e.deltaX;
-    swipeEndTrack.current = e.deltaX;
-    if (e.dir === "Right") {
-      swipeDiv.style.transform = `translateX(0px)`;
-      return;
-    }
-
-    if (swipePx < 0 && swipePx > -200)
+    if (e.dir === "Left") {
+      console.log("swiping Left");
+      setSide("Left");
+      const max_swipe = -200;
+      if (swipePx <= max_swipe) return;
       swipeDiv.style.transform = `translateX(${swipePx + "px"})`;
-  };
-  const handleEnd = () => {
-    if (!swipeEndTrack.current) {
-      swipe.current.style.transform = `translateX(0px)`;
-      return;
+      swipeEndTrack.current = "Left";
     }
-    if (swipeEndTrack.current <= -70 && swipeEndTrack.current) {
-      swipeEndTrack.current = null;
+    if (e.dir === "Right") {
+      setSide("Right");
+
+      console.log("swiping Right");
+      const max_swipe = 200;
+      if (swipePx >= max_swipe) return;
+      swipeDiv.style.transform = `translateX(${swipePx + "px"})`;
+      swipeEndTrack.current = "Right";
+    }
+  };
+  const handleEnd = ({ event }) => {
+    const getLastTouched = event.changedTouches[0].clientX;
+    const swipeTrack = swipeEndTrack.current;
+    console.log(getLastTouched, swipeEndTrack.current);
+
+    if (getLastTouched >= 200 && swipeTrack === "Right") {
+      swipe.current.style.transform = `translateX(70px)`;
+    }
+    if (getLastTouched <= 200 && swipeTrack === "Left") {
       swipe.current.style.transform = `translateX(-70px)`;
     }
   };
@@ -43,20 +55,32 @@ const CartProducts = () => {
     ...config,
   });
   return (
-    <div className="relative" {...handlers}>
-      <div className="absolute flex p-4 -z-[1] bg-red-500 bg-opacity-40 inset-0 rounded-xl">
-        <button
-          className="ml-auto  text-red-600"
-          onClick={(e) => {
-            console.log("Hello");
-          }}
-        >
-          <RiDeleteBinFill size={25} />
-        </button>
+    <div
+      onClick={() => {
+        swipe.current.style.transform = `translateX(0px)`;
+      }}
+      className="relative overflow-hidden"
+      {...handlers}
+    >
+      <div className={`absolute flex p-4 z-[1] ${side==="Left"?"bg-red-500":""} ${side==="Right"?"bg-orange-500":""} bg-opacity-40 inset-0 rounded-xl`}>
+        {side === "Left" && (
+          <button
+            className="ml-auto  text-red-600"
+            onClick={(e) => console.log("Hello")}
+          >
+            <RiDeleteBinFill size={25} />
+          </button>
+        )}
+
+        {side === "Right" && (
+          <button className=" text-white" onClick={(e) => console.log("Hello")}>
+            <FaHeart size={25} />
+          </button>
+        )}
       </div>
       <div
         ref={swipe}
-        className={`flex transition-transform duration-500 ease-out gap-2 bg-white border  shadow-lg p-2 rounded-xl`}
+        className={`flex relative   z-[2] transition-transform duration-500 ease-out gap-2 bg-white border  shadow-lg p-2 rounded-xl`}
       >
         {/* image  */}
         <div className="h-[80px] rounded-xl overflow-hidden aspect-square">
