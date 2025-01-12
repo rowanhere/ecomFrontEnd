@@ -1,5 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import React from "react";
+import ProfileDetails from "./ProfileDetails";
 
 const ProfileMain = () => {
   const location = useLocation();
@@ -9,9 +10,7 @@ const ProfileMain = () => {
   return (
     <div>
       {isProfileRoot && (
-        <>
-          <h1>Profile Page</h1>
-        </>
+       <ProfileDetails/>
       )}
       <Outlet />
     </div>

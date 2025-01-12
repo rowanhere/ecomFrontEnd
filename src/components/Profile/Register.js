@@ -30,7 +30,7 @@ const Register = () => {
       if (getUserId) {
         navigate("/profile");
       }
-    }, []);
+    }, [navigate]);
   
   const validateForm = async (e) => {
     e.preventDefault();

@@ -51,7 +51,7 @@ const Login = () => {
     if (getUserId) {
       navigate("/profile");
     }
-  }, []);
+  }, [navigate]);
 
   const toastConfig = {
     position: "bottom-right",
