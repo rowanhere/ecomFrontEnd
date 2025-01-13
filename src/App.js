@@ -46,22 +46,23 @@ function App() {
         { path: "/search", element: <SearchMain /> },
         { path: "/products/:id", element: <ProductMain /> },
         { path: "/wishlist", element: <WishListMain /> },
+        {
+          path: "/profile",
+          element: <ProfileMain />,
+          children: [
+            // Define ProfileMain as a child route
+            { path: "login", element: <Login /> }, // Nested under /profile
+            { path: "register", element: <Register /> }, // Nested under /profile
+            { path: "forgotpassword", element: <ForgotPassword /> }, // Nested under /profile
+          ],
+        },
       ],
     },
     {
       path: "/cart",
       element: <CartComponents />,
     },
-    {
-      path: "/profile",
-      element: <ProfileMain />,
-      children: [
-        // Define ProfileMain as a child route
-        { path: "login", element: <Login /> }, // Nested under /profile
-        { path: "register", element: <Register /> }, // Nested under /profile
-        { path: "forgotpassword", element: <ForgotPassword /> }, // Nested under /profile
-      ],
-    },
+   
   ]);
 
   return (

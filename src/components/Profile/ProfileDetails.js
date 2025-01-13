@@ -23,7 +23,7 @@ const ProfileDetails = () => {
           Account
         </h1>
       </nav>
-      <main className="mt-4 grid grid-cols-1">
+      <main className="mt-4 grid grid-cols-1 mb-[8rem]">
         <section className=" bg-gray-100 rounded-2xl py-2 px-4 flex gap-3">
           <div className="h-[60px] aspect-square rounded-lg overflow-hidden">
             <img
