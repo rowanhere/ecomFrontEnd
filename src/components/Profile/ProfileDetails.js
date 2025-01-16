@@ -11,11 +11,13 @@ import { MdContactSupport } from "react-icons/md";
 import { LuContact } from "react-icons/lu";
 import { RiVideoOnLine } from "react-icons/ri";
 import { GiReturnArrow } from "react-icons/gi";
+import ProfileModel from "./ProfileModel";
 
 const ProfileDetails = () => {
+
   return (
     <>
-      <nav className="mt-4 flex items-center">
+      <nav className=" mt-4 flex items-center">
         <ProductNavButton takeBack={true}>
           <FaArrowLeft size={20} />
         </ProductNavButton>
@@ -96,7 +98,9 @@ const ProfileDetails = () => {
             <button>Returns & Refunds</button>
           </div>
         </section>
+        <ProfileModel/>
       </main>
+
     </>
   );
 };
